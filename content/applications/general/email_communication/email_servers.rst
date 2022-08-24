@@ -137,7 +137,8 @@ Odoo relies on generic email aliases to fetch incoming messages.
 * **Original messages**: Several business objects have their own alias to create new records in
   Odoo from incoming emails:
 
-  * Sales Channel (to create Leads or Opportunities in `Odoo CRM <https://www.odoo.com/page/crm>`__),
+  * Sales Channel (to create Leads or Opportunities in `Odoo CRM <https://www.odoo.com/page/
+    crm>`__),
   * Support Channel (to create Tickets in `Odoo Helpdesk <https://www.odoo.com/page/helpdesk>`__),
   * Projects (to create new Tasks in `Odoo Project <https://www.odoo.com/page
     /project-management>`__),
@@ -151,7 +152,6 @@ recommended method is to manage one email address per Odoo alias in the mail ser
 * Create the corresponding email addresses in the mail server (catchall@, bounce@, sales@, etc.).
 * Set the :guilabel:`Alias Domain` name in :menuselection:`Settings --> General Settings -->
   Discuss`.
-
 * If the database's hosting type is Odoo on-premise, create an :guilabel:`Incoming Mail Server` in
   Odoo for each alias. This can be done from the General Settings as well. Fill out the form
   according to the email provider's settings. Leave the :guilabel:`Actions to Perform on Incoming
@@ -186,6 +186,36 @@ By default, inbound messages are fetched every 5 minutes in Odoo on-premise.
    This value can be changed in :ref:`developer mode <developer-mode>`. Go to
    :menuselection:`Settings --> Technical --> Automation --> Scheduled Actions` and look for
    :guilabel:`Mail: Fetchmail Service`.
+
+Set up different outgoing email servers for a multi-company environment
+=======================================================================
+
+The "From Filter" allows for the use of a specific outgoing email server depending on the "From"
+email address that Odoo is sending on behalf of. When an email is sent from Odoo and the "From
+Filter" is configured, then the email server will be chosen as follows:
+
+#. Odoo searches for an email server having the same "From Filter" as the "From" email address
+   defined in the outgoing email. For example, if the "From" email address is `test\@example.com`,
+   only the email servers that have the "From Filter" equal to `test\@example.com` will be returned.
+#. If no email servers are found, then Odoo searches for an email server that has the same domain
+   in the "From Filter" as the "From" email address of the outgoing email. For example, if the
+   "From" email address is `test\@example.com`, only the email servers that have the "From Filter"
+   equal to `example.com` will be returned.
+
+If no email servers are found after checking for the domain, then Odoo will return all email
+servers that do not have any "From Filter" set.
+
+Should this previous query return no results, then Odoo performs a search for an email server
+using the system parameter: `mail.default.from`. First, the email address listed will attempt
+to match an email server and then the domain will attempt a match.
+
+If no email server is found then Odoo will return the first outgoing email server (sorted by
+priority).
+
+.. note::
+   If several email servers are found, then Odoo will use the first one according to its priority.
+   For example, if there are two email servers, one with a priority of `10` and the other with a
+   priority of `20`, then the email server with a priority of `10` will be used.
 
 Set up different dedicated servers for transactional and mass mails
 ===================================================================
