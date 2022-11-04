@@ -434,10 +434,10 @@ by intercepting all requests to :samp:`/{MODULE}/static/{FILE}`, and looking up 
 
 .. example::
    Say Odoo has been installed via the **source**, and the two git repositories for Community and
-   Enterprise has been cloned in :file:`/opt/odoo` and :file:`/opt/odoo-enterprise` respectively. 
-   The addons paths is ``/opt/odoo/odoo,/opt/odoo/addons,/opt/odoo-enterprise``. Using the above
-   NGINX (https) configuragion, the following location block should be added to serve static files
-   via NGINX.
+   Enterprise has been cloned in :file:`/opt/odoo/community` and :file:`/opt/odoo/enterprise`. The
+   addons paths is ``/opt/odoo/community/odoo/addons,/opt/community/odoo/addons,/opt/odoo/enterprise``.
+   Using the above NGINX (https) configuragion, the following location block should be added to
+   serve static files via NGINX.
 
    .. code-block:: nginx
    
@@ -447,23 +447,9 @@ by intercepting all requests to :samp:`/{MODULE}/static/{FILE}`, and looking up 
    
        # Serve static files right away
        location ~ ^/[^/]+/static/.+$ {
-           try_files /static-base$uri /static-addons$uri /static-enterprise$uri @odoo$uri;
+           root /opt/odoo;
+           try_files /community/odoo/addons$uri /community/addons$uri /enterprise$uri @odoo;
            expires 24h;
-       }
-   
-       location /static-base {
-           internal;
-           alias /opt/odoo/odoo/addons;
-       }
-   
-       location /static-addons {
-           internal;
-           alias /opt/odoo/addons;
-       }
-   
-       location /static-enterprise {
-           internal;
-           alias /opt/odoo-enterprise;
        }
 
 .. warning::
