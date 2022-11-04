@@ -911,7 +911,6 @@ header {
 //------------------------------------------------------------------------------
 // Alerts
 //------------------------------------------------------------------------------
-// alert-info
 // alert-note
 // alert-tip
 // alert-warning
@@ -952,23 +951,6 @@ header {
                     @include media-breakpoint-down(md) {
                         display:none;
                     }
-                }
-            }
-
-            &.alert-info, &[class^="admonition"] {
-                border-color: tint-color($brand-info, 30%);
-                background-color: tint-color($brand-info, 85%);
-                color: shade-color($brand-info, 35%);
-
-                > .alert-title, > h3 {
-                    color: $brand-info;
-                    &:before {
-                        content: '#{$i-info}';
-                    }
-                }
-
-                code, div[class^="highlight"] {
-                    border-color: tint-color($brand-info, 30%);
                 }
             }
 
