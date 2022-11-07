@@ -25,52 +25,52 @@ If you already have an Odoo server installed, you can just use its parameters.
 
 .. important::
 
-    For Odoo Online instances (<domain>.odoo.com), users are created without a
-    *local* password (as a person you are logged in via the Odoo Online
-    authentication system, not by the instance itself). To use XML-RPC on Odoo
-    Online instances, you will need to set a password on the user account you
-    want to use:
+   For Odoo Online instances (<domain>.odoo.com), users are created without a
+   *local* password (as a person you are logged in via the Odoo Online
+   authentication system, not by the instance itself). To use XML-RPC on Odoo
+   Online instances, you will need to set a password on the user account you
+   want to use:
 
-    * Log in your instance with an administrator account.
-    * Go to :menuselection:`Settings --> Users & Companies --> Users`.
-    * Click on the user you want to use for XML-RPC access.
-    * Click on :guilabel:`Action` and select :guilabel:`Change Password`.
-    * Set a :guilabel:`New Password` value then click :guilabel:`Change Password`.
+   * Log in your instance with an administrator account.
+   * Go to :menuselection:`Settings --> Users & Companies --> Users`.
+   * Click on the user you want to use for XML-RPC access.
+   * Click on :guilabel:`Action` and select :guilabel:`Change Password`.
+   * Set a :guilabel:`New Password` value then click :guilabel:`Change Password`.
 
-    The *server url* is the instance's domain (e.g.
-    *https://mycompany.odoo.com*), the *database name* is the name of the
-    instance (e.g. *mycompany*). The *username* is the configured user's login
-    as shown by the *Change Password* screen.
+   The *server url* is the instance's domain (e.g.
+   *https://mycompany.odoo.com*), the *database name* is the name of the
+   instance (e.g. *mycompany*). The *username* is the configured user's login
+   as shown by the *Change Password* screen.
 
 .. tabs::
 
    .. code-tab:: python
 
-       url = <insert server URL>
-       db = <insert database name>
-       user = 'admin'
-       pwd = <insert password for your admin user (default: admin)>
+      url = <insert server URL>  # 'mycompany.odoo.com'
+      database = <insert database name>  # 'mycompany'
+      username = 'admin'
+      password = <insert password for your admin user (default: admin)>
 
    .. code-tab:: ruby
 
-       url = <insert server URL>
-       db = <insert database name>
-       user = "admin"
-       pwd = <insert password for your admin user (default: admin)>
+      url = <insert server URL>  # "mycompany.odoo.com"
+      database = <insert database name>  # "mycompany"
+      username = "admin"
+      password = <insert password for your admin user (default: admin)>
 
    .. code-tab:: php
 
-       $url = <insert server URL>;
-       $db = <insert database name>;
-       $user = "admin";
-       $pwd = <insert password for your admin user (default: admin)>;
+      $url = <insert server URL>;  // "mycompany.odoo.com"
+      $database = <insert database name>;  // "mycompany"
+      $username = "admin";
+      $password = <insert password for your admin user (default: admin)>;
 
    .. code-tab:: java
 
-       final String url = <insert server URL>,
-                     db = <insert database name>,
-                   user = "admin",
-                    pwd = <insert password for your admin user (default: admin)>;
+      final String url = <insert server URL>,  // "mycompany.odoo.com"
+            database = <insert database name>,  // "mycompany"
+            username = "admin",
+            password = <insert password for your admin user (default: admin)>;
 
 API Keys
 ~~~~~~~~
@@ -126,43 +126,23 @@ database:
 
    .. code-tab:: python
 
-        import urllib.parse
-        import xmlrpc.client
-        info = xmlrpc.client.ServerProxy(
-            'https://demo.odoo.com/start').start()
-        url, db, user, pwd = (
-            urllib.parse.urlparse(info['host']),
-            info['database'],
-            info['user'],
-            info['password'],
-        )
+      info = xmlrpc.client.ServerProxy('https://demo.odoo.com/start').start()
+      url, database, username, password = \
+         info['host'][8:], info['database'], info['user'], info['password']
 
    .. code-tab:: ruby
 
-        require "uri"
-        require "xmlrpc/client"
-        info = XMLRPC::Client.new2(
-            'https://demo.odoo.com/start').call('start')
-        url, db, user, pwd = [
-            URI.parse(info['host']),
-            info['database'],
-            info['user'],
-            info['password'],
-        ]
+      info = XMLRPC::Client.new2('https://demo.odoo.com/start').call('start')
+      url, database, username, password = \
+         info['host'][8..-1], info['database'], info['user'], info['password']
 
    .. group-tab:: PHP
 
       .. code-block:: php
 
-            require_once('ripcord.php');
-            $info = ripcord::client(
-                'https://demo.odoo.com/start')->start();
-            list($url, $db, $user, $pwd) = [
-                parse_url($info['host']),
-                $info['database'],
-                $info['user'],
-                $info['password'])
-            ];
+         $info = ripcord::client('https://demo.odoo.com/start')->start();
+         list($url, $database, $username, $password) =
+           [substr($info['host'], 8), $info['database'], $info['user'], $info['password']];
 
       .. note::
          These examples use the `Ripcord <https://code.google.com/p/ripcord/>`_
@@ -180,18 +160,18 @@ database:
 
       .. code-block:: java
 
-            final XmlRpcClient start =  new XmlRpcClient() {{
-                setConfig(new XmlRpcClientConfigImpl() {{
-                    setServerURL(new URL("https://demo.odoo.com/start"));
-                }});
-            }};
-            final Map<String, String> info =
-                (Map<String, String>) start.execute("start", emptyList());
+         final XmlRpcClient start =  new XmlRpcClient() {{
+             setConfig(new XmlRpcClientConfigImpl() {{
+                 setServerURL(new URL("https://demo.odoo.com/start"));
+             }});
+         }};
+         final Map<String, String> info =
+             (Map<String, String>) start.execute("start", emptyList());
 
-            final String url = info.get("host"),
-                db = info.get("database"),
-                user = info.get("user"),
-                pwd = info.get("password");
+         final String url = info.get("host").substring(8),
+                 database = info.get("database"),
+                 username = info.get("user"),
+                 password = info.get("password");
 
       .. note::
          These examples use the `Apache XML-RPC library <https://ws.apache.org/xmlrpc/>`_.
@@ -206,37 +186,81 @@ Odoo requires users of the API to be authenticated before they can query most
 data.
 
 The ``RPC2`` endpoint provides meta-calls which don't require
-authentication, such as the authentication itself or fetching version
-information. To verify if the connection information is correct before trying
-to authenticate, the simplest call is to ask for the server's version. The
-authentication to a specific database is done via standard http.
+authentication, such as the database management or fetching the server
+version. To verify if the connection information is correct before trying
+to authenticate, the simplest call is to ask for the server's version.
 
 .. tabs::
 
-   .. code-tab:: python
+   .. group-tab:: Python
 
-        common = xmlrpc.client.ServerProxy(
-            f'{url.scheme}://{url.netloc}/RPC2')
-        common.version()
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.py
+         :language: python
+         :dedent: 8
+         :start-after: <docanchor logging_in common>
+         :end-before: </docanchor logging_in common>
 
-   .. code-tab:: ruby
+   .. group-tab:: Ruby
 
-        common = XMLRPC::Client.new2("#{url.scheme}://#{url.host}/RPC2")
-        common.call('version')
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.rb
+         :langage: ruby
+         :dedent: 0
+         :start-after: <docanchor logging_in common>
+         :end-before: </docanchor logging_in common>
 
-   .. code-tab:: php
+   .. group-tab:: PHP
 
-        $common = ripcord::client("${url['scheme']}://${url['host']}/RPC2");
-        $common->version();
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.php
+         :langage: php
+         :dedent: 0
+         :start-after: <docanchor logging_in common>
+         :end-before: </docanchor logging_in common>
 
-   .. code-tab:: java
+   .. group-tab:: Java
 
-        final XmlRpcClient common = new XmlRpcClient() {{
-            setConfig(new XmlRpcClientConfigImpl() {{
-                setServerURL(new URL(String.format("%s/RPC2", url)));
-            }});
-        }};
-        common.execute("version", emptyList());
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.java
+         :langage: java
+         :dedent: 8
+         :start-after: <docanchor logging_in common>
+         :end-before: </docanchor logging_in common>
+
+Once the connection is established, you can connect again this time
+providing a database and a user/password authentication pair. The
+result should be the same as above.
+
+.. tabs::
+
+   .. group-tab:: Python
+
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.py
+         :language: python
+         :dedent: 8
+         :start-after: <docanchor logging_in models>
+         :end-before: </docanchor logging_in models>
+
+   .. group-tab:: Ruby
+
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.rb
+         :language: ruby
+         :dedent: 0
+         :start-after: <docanchor logging_in models>
+         :end-before: </docanchor logging_in models>
+
+   .. group-tab:: PHP
+
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.php
+         :language: php
+         :dedent: 0
+         :start-after: <docanchor logging_in models>
+         :end-before: </docanchor logging_in models>
+
+   .. group-tab:: Java
+
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.java
+         :language: java
+         :dedent: 8
+         :start-after: <docanchor logging_in models>
+         :end-before: </docanchor logging_in models>
 
 Result:
 
@@ -248,35 +272,6 @@ Result:
        "server_serie": "13.0",
        "protocol_version": 1,
    }
-
-
-.. tabs::
-
-   .. code-tab:: python
-
-        models = xmlrpc.client.ServerProxy(
-            f'{url.scheme}://{user}:{pwd}@{url.netloc}/RPC2/{db}')
-
-   .. code-tab:: ruby
-
-        models = XMLRPC::Client.new2(
-            "#{url.scheme}://#{user}:#{pwd}@#{url.host}/RPC2/#{db}")
-
-   .. code-tab:: php
-
-        $models = ripcord::client(
-            "${url['scheme']}://$user:$pwd@${url['host']}/RPC2/$db");
-
-   .. code-tab:: java
-
-        final XmlRpcClient models = new XmlRpcClient() {{
-            setTypeFactory(new XmlRpcTypeNil(this));
-            setConfig(new XmlRpcClientConfigImpl() {{
-                setServerURL(new URL(String.format("%s/RPC2/%s", url, db)));
-                setBasicUserName(user);
-                setBasicPassword(pwd);
-            }});
-        }};
 
 .. _api/external_api/calling_methods:
 
@@ -306,53 +301,45 @@ The result of the call is whatever the method returned, with a few conversions:
 
 Depending on the API, it may also be possible to create or keep a proxy to a model on which you can keep calling methods.
 
-   .. tabs::
+.. tabs::
 
-      .. code-tab:: python
+   .. group-tab:: Python
 
-            partners = models.res.partner
-            partners.check_access_rights(
-                [],                         # empty recordset
-                ['read'],                   # positional arguments
-                {'raise_exception': False}  # keyword arguments
-            )
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.py
+         :language: python
+         :dedent: 8
+         :start-after: <docanchor check_access_rights>
+         :end-before: </docanchor check_access_rights>
 
-      .. code-tab:: ruby
+   .. group-tab:: Ruby
 
-            partners = models.proxy('res.partner')
-            partners.check_access_rights(
-                [],                       # empty recordset
-                ['read'],                 # positional arguments
-                {raise_exception: false}  # keyword arguments
-            )
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.rb
+         :language: ruby
+         :dedent: 0
+         :start-after: <docanchor check_access_rights>
+         :end-before: </docanchor check_access_rights>
 
-      .. code-tab:: php
+   .. group-tab:: PHP
 
-            $partners = $models->res->partner;
-            $partners->check_access_rights(
-                [],                           // empty recordset
-                ['read'],                     // positional arguments
-                ['raise_exception' => false]  // keyword arguments
-            );
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.php
+         :language: php
+         :dedent: 0
+         :start-after: <docanchor check_access_rights>
+         :end-before: </docanchor check_access_rights>
 
-      .. code-tab:: java
+   .. group-tab:: Java
 
-            models.execute(
-                "res.partner.check_access_rights",
-                asList(
-                    0,                                // empty recordset
-                    asList("read"),                   // positional arguments
-                    new HashMap<String, Object>() {{  // keyword arguments
-                        put("raise_exception", false);
-                    }}
-                )
-            );
+      .. literalinclude:: {ODOO_RELPATH}/odoo/addons/rpc2/tests/test_rpc2.java
+         :language: java
+         :dedent: 8
+         :start-after: <docanchor check_access_rights>
+         :end-before: </docanchor check_access_rights>
 
-   Result:
+Result:
 
-   .. code-block:: json
+.. code-block:: json
 
-      true
+   true
 
 List records
 ------------
