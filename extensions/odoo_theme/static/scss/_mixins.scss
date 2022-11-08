@@ -5,8 +5,8 @@
 // Utilities
 // ------------------------------------------------------------------
 
-@mixin o-position-absolute($top: auto, $right: auto, $bottom: auto, $left: auto){
-    position: absolute;
+@mixin o-position($position: absolute, $top: auto, $right: auto, $bottom: auto, $left: auto){
+    position: $position;
     top: $top;
     left: $left;
     bottom: $bottom;
@@ -47,7 +47,7 @@
   transform         : $args;
 }
 
-//-- add icon
+//-- add icon to :before or :after
 
 @mixin o-inline-icon($icon-content, $margin, $v-align: middle, $font-size: 1.5rem, $font-weight: $fw_regular) {
     content: '#{$icon-content}';
@@ -77,7 +77,7 @@
             display: block;
             width: $width;
             height: $height;
-            @include o-position-absolute(auto, 0, 0, 0);
+            @include o-position(absolute,auto, 0, 0, 0);
             background-image: url('#{$img}');
             background-color: $white;
             background-repeat: no-repeat;
@@ -93,9 +93,29 @@
 }
 
 @mixin o-content-tab-selected {
-    font-weight: $fw_bold;
-    background: $o-light;
     border-bottom: 1px solid $o-light;
     border-left: 1px solid $o-gray-light;
     border-right: 1px solid $o-gray-light;
+    background: $o-light;
+    font-weight: $fw_bold;
+}
+
+//
+@mixin o-alert($alert-icon, $alert-color, $alert-bg : false,) {
+            border-color: lighten($alert-color, 10%);
+            @if($alert-bg){
+                background-color: $alert-bg;
+            }
+            color: darken($alert-color,5%);
+
+            > .alert-title, > h3 {
+                color: $alert-color;
+                &:before {
+                    content: $alert-icon;
+                }
+            }
+
+            code, div[class^="highlight"] {
+                border-color: tint-color($alert-color, 40%);
+            }
 }

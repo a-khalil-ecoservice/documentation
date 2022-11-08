@@ -585,7 +585,7 @@ ol.upperroman {
     list-style: upper-roman;
 }
 
-:not(li) > ol > li:first-child > :first-child,
+/* :not(li) > ol > li:first-child > :first-child,
 :not(li) > ul > li:first-child > :first-child {
     margin-top: 0px;
 }
@@ -593,7 +593,7 @@ ol.upperroman {
 :not(li) > ol > li:last-child > :last-child,
 :not(li) > ul > li:last-child > :last-child {
     margin-bottom: 0px;
-}
+} */
 
 ol.simple ol p,
 ol.simple ul p,

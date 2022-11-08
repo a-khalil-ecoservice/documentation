@@ -6,7 +6,8 @@ $container-max-width-xxxl: 1560px;
 
 // Typography
 // ===============================================
-$font-family-serif:           'Roboto Slab', Georgia, "Times New Roman", Times, serif;
+$font-family-sans:                          "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif !default;
+$font-family-serif:                         'Roboto Slab', Georgia, "Times New Roman", Times, serif;
 
 $fw_extralight:                             200;
 $fw_light:                                  300;
@@ -17,6 +18,7 @@ $fw_bold:                                   700;
 $fw_extrabold:                              800;
 $fw_black:                                  900;
 
+$font-size-primary:                         1rem;
 $font-size-secondary:                       .875rem;
 
 //------------------------------------------------------------------------------
@@ -149,9 +151,7 @@ $orange:                                    $o-orange;
 $green:                                     $o-green;
 $teal:                                      $o-teal;
 
-$doc_paper_dark:                            $o-gray-lighter;
-$doc_paper:                                 $o-light;
-$doc_code-bg:                               #F8F8F8;
+$o-code-bg:                                 #F8F8F8;
 
 $primary:                                   $o-teal;
 $secondary:                                 $o-violet;
@@ -165,7 +165,7 @@ $dark:                                      $o-dark;
 // Header
 $o-header-mobile-height:                    50px;
 $o-header-height:                           80px;
-$o-header-white:                            #ffffff;
+$o-header-bg:                               $white;
 
 $o-subheader-height:                        32px;
 
@@ -191,6 +191,7 @@ $margin-l:                                  $padding-l;
 //------------------------------------------------------------------------------
 // Components
 //------------------------------------------------------------------------------
-
+//Alert
+$alert-border-width:                        3px;
 // Accordion
 $o-accordion-bg:                            $o-gray-lighter!default;
